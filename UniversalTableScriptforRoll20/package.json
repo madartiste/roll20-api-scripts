@@ -1,0 +1,13 @@
+{
+  "name": "Universal Table Dice Roller",
+  "version": "1.4",
+  "description": "A dice roller to automate rolling on the Universal Table for Marvel Superheroes RPG",
+  "authors": "Sarah A.",
+  "roll20userid": "52234",
+  "dependencies": {
+    },
+  "modifies": {
+  },
+  "conflicts": [
+  ]
+}
