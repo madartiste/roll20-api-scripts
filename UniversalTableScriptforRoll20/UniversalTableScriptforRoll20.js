@@ -45,7 +45,7 @@ on("chat:message", function(msg) {
         var msgContent = msg.content;
         var input = msgContent.toLowerCase().split(" ");
     
-        var rankCol = input[1];
+        var rankCol;
         switch (input[1]) {
             case "shift-0":
                 rankCol = "shift0";
