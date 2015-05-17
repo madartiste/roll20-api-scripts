@@ -46,6 +46,32 @@ on("chat:message", function(msg) {
         var input = msgContent.toLowerCase().split(" ");
     
         var rankCol = input[1];
+        switch (input[1]) {
+            case "shift-0":
+                rankCol = "shift0";
+                break;
+            case "shift-x":
+                rankCol = "shiftx";
+                break;
+            case "shift-y":
+                rankCol = "shifty";
+                break;
+            case "shift-z":
+                rankCol = "shiftz";
+                break;
+            case "cl1000":
+                rankCol = "class1000";
+                break;
+            case "cl3000":
+                rankCol = "class3000";
+                break;
+            case "cl5000":
+                rankCol = "class5000";
+                break;
+            default:
+                rankCol = input[1];            
+        }
+        
         var colShift = parseInt(input[2]);
         var attResult;
         
