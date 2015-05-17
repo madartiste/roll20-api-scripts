@@ -37,7 +37,7 @@ on("chat:message", function(msg) {
     
         var rankColumnsObjects = [/*Shift 0*/{startgreen: 66, startyellow: 95, startred: 100}, /*Feeble*/{startgreen: 61, startyellow: 91, startred: 100}, /*Poor*/{startgreen: 56, startyellow: 86, startred: 100}, /*Typical*/{startgreen: 51, startyellow: 81, startred: 98}, /*Good*/{startgreen: 46, startyellow: 76, startred: 98}, /*Excellent*/{startgreen: 41, startyellow: 71, startred: 95}, /*Remarkable*/{startgreen: 36, startyellow: 66, startred: 95}, /*Incredible*/{startgreen: 31, startyellow: 61, startred: 91}, /*Amazing*/{startgreen: 26, startyellow: 56, startred: 91}, /*Monstrous*/{startgreen: 21, startyellow: 51, startred: 86}, /*Unearthly*/{startgreen: 16, startyellow: 46, startred: 86}, /*Shift X*/{startgreen: 11, startyellow: 41, startred: 81}, /*Shift Y*/{startgreen: 7, startyellow: 41, startred: 81}, /*Shift Z*/{startgreen: 4, startyellow: 36, startred: 76}, /*Class 1000*/{startgreen: 2, startyellow: 36, startred: 76}, /*Class 3000*/{startgreen: 2, startyellow: 31, startred: 71}, /*Class 5000*/{startgreen: 2, startyellow: 26, startred: 66}, /*Beyond*/{startgreen: 2, startyellow: 21, startred: 61}];
 
-        var rankColumns = ["shift0", "feeble", "poor", "typical", "good", "excellent", "remarkable", "incredible", "amazing", "monstrous", "unearthly", "shiftx", "shifty", "shiftz", "class1000", "class3000", "class5000", "beyond"];
+        var rankColumns = ["shift-0", "feeble", "poor", "typical", "good", "excellent", "remarkable", "incredible", "amazing", "monstrous", "unearthly", "shift-x", "shift-y", "shift-z", "class1000", "class3000", "class5000", "beyond"];
 
         var attackTypeResults = [/*White*/{ba: "Miss", ea: "Miss", sh: "Miss", te: "Miss", tb: "Miss", en: "Miss", fo: "Miss", gp: "Miss", gb: "Miss", es: "Miss", ch: "Miss", do: "None", ev: "Autohit", bl:  "-6 CS", ca: "Autohit", stun: "1-10", slam: "Gr. Slam", kill: "En. Loss"}, /*Green*/{ba: "Hit", ea: "Hit", sh: "Hit", te: "Hit", tb: "Hit", en: "Hit", fo: "Hit", gp: "Miss", gb: "Take", es: "Miss", ch: "Hit", do: "-2 CS", ev: "Evasion", bl: "-4 CS", ca: "Miss", stun: "1", slam: "1 area", kill: "E/S"}, /*Yellow*/{ba: "Slam", ea: "Stun", sh: "Bullseye", te: "Stun", tb: "Hit", en: "Bullseye", fo: "Bullseye", gp: "partial", gb: "Grab", es: "Escape", ch: "Slam", do: "-4 CS", ev: "+1 CS", bl: "-2 CS", ca: "Damage", stun: "No", slam: "Stagger", kill: "No"}, /*Red*/{ba: "Stun", ea: "Kill", sh: "Kill", te: "Kill", tb: "Stun", en: "Kill", fo: "Stun", gp: "Hold", gb: "Break", es: "Reverse", ch: "Stun", do: "-6 CS", ev: "+2 CS", bl: "+1 CS", ca: "Catch", stun: "No", slam: "No", kill: "No"}];
 
@@ -47,17 +47,17 @@ on("chat:message", function(msg) {
     
         var rankCol;
         switch (input[1]) {
-            case "shift-0":
-                rankCol = "shift0";
+            case "shift0":
+                rankCol = "shift-0";
                 break;
-            case "shift-x":
-                rankCol = "shiftx";
+            case "shiftx":
+                rankCol = "shift-x";
                 break;
-            case "shift-y":
-                rankCol = "shifty";
+            case "shifty":
+                rankCol = "shift-y";
                 break;
-            case "shift-z":
-                rankCol = "shiftz";
+            case "shiftz":
+                rankCol = "shift-z";
                 break;
             case "cl1000":
                 rankCol = "class1000";
