@@ -150,7 +150,7 @@ on("chat:message", function(msg) {
             } else if (rollResult >= rollColumn.startyellow && rollResult < rollColumn.startred) {
                 attack(2);
                 /*USE DEFAULT ROLL TEMPLATE*/
-                sendChat (msg.who, "&{template:default} {{name==" + who + "}} {{Column=" + rankColumns[rollColumnIndex].toUpperCase() + "}} {{Roll=" + rollResult + "}}{{Result=<span style=\"padding:2px 5px; background-color:yellow;font-weight:bold;\">YELLOW</span>" + attackTypeString + "}}");
+                sendChat (msg.who, "&{template:default} {{name=" + who + "}} {{Column=" + rankColumns[rollColumnIndex].toUpperCase() + "}} {{Roll=" + rollResult + "}}{{Result=<span style=\"padding:2px 5px; background-color:yellow;font-weight:bold;\">YELLOW</span>" + attackTypeString + "}}");
                 /*USE NO ROLL TEMPLATE*/
                 //sendChat(msg.who, rankColumns[rollColumnIndex].toUpperCase() + " column: " + rollResult + " is a <span style=\"padding:2px 5px; background-color:yellow;font-weight:bold;\">YELLOW</span> result" + attackTypeString);
                 /*USE MARVEL THEMED ROLL TEMPATE FROM CHARACTER SHEET*/
@@ -159,7 +159,7 @@ on("chat:message", function(msg) {
             } else if (rollResult >= rollColumn.startred) {
                 attack(3);
                 /*USE DEFAULT ROLL TEMPLATE*/
-                sendChat (msg.who, "&{template:default} {{name==" + who + "}} {{Column=" + rankColumns[rollColumnIndex].toUpperCase() + "}} {{Roll=" + rollResult + "}}{{Result=<span style=\"padding:2px 5px; color: white;background-color:red;font-weight:bold;\">RED</span>" + attackTypeString + "}}");
+                sendChat (msg.who, "&{template:default} {{name=" + who + "}} {{Column=" + rankColumns[rollColumnIndex].toUpperCase() + "}} {{Roll=" + rollResult + "}}{{Result=<span style=\"padding:2px 5px; color: white;background-color:red;font-weight:bold;\">RED</span>" + attackTypeString + "}}");
                 /*USE NO ROLL TEMPLATE*/
                 //sendChat(msg.who, rankColumns[rollColumnIndex].toUpperCase() + " column: " + rollResult + " is a <span style=\"padding:2px 5px; color: white;background-color:red;font-weight:bold;\">RED</span> result" + attackTypeString);
                 /*USE MARVEL THEMED ROLL TEMPATE FROM CHARACTER SHEET*/
