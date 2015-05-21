@@ -4,9 +4,6 @@ ROLLS SHOULD BE STRUCTURED AS:
 BASIC RULES REFERENCE:
 Make sure there are no spaces in the Rank Name.  Ex: Shift 0 becomes Shift0 or Shift-0 and Class 3000 becomes CL3000 or Class3000
 Rank Name must come first after the "!ut" declaration and is the only required input
-Do not use a + sign in front of positive Column Shifts.  Ex: A +3 column shift should just be 3
-If there is a Column Shift, then it MUST come before any Attack Type (if there is one)
-You do not need to use a Column Shift to use the Attack Type and you do not need to use the Attack Type to use a Column Shift
 The --roll: and --id: options MUST come after Rank Name, Column Shift, and Attack Type but otherwise can be in any order and are completely optional (These are only used for Roll Templates)
 The script does it's best to be case insensitive, so capitalization should not matter
 Spelling, however, does matter ("incredible" will work, "Inedible" will not)
@@ -16,7 +13,7 @@ Use !example to see some example rolls
 Use !attack to see a reference list of the attack type abbreviations (they are the same abbreviations used on the Universal Table)
 
 RANK NAMES:
-Rank Names MUST come first after the "!ut" API call and should be written with no spaces.  You can also use the same abbreviations for rank names as can be found on the top of the universal table (shown in parenthesis):
+Rank Names MUST come first after the "!ut" API call and should be written with no spaces.  You can also use the same abbreviations for rank names as can be found on the top of the universal table (shown in parenthesis).
 Shift-0 or Shift0  (0)
 Feeble (Fe)
 Poor (Pr)
@@ -49,15 +46,14 @@ Rolls on the Incredible column
 +1 column shift to Incredible
 !ut Unearthly -3
 -3 column shift to Incredible
-!ut Excellent 1 do
+!ut Excellent +1 do
 +1 column shift to Remarkable column for a Dodging attempt
 !ut Typical CA
 Catching attempt on the Typical column
-!ut Remarkable 1 BA --roll:Fighting --id:@{Mr. Bearington|characer_id}
+!ut Remarkable BA 1 --roll:Fighting --id:@{Mr. Bearington|characer_id}
 +1 column shift to Incredible on a Blunt Attack by Mr. Bearington for a Fighting roll.
 !ut Amazing --roll:My Super Power
 Amazing column for a "My Super Power" roll
-!ut Excellent
 
 
 USE WITH MarvelSH CHARACTER SHEET:

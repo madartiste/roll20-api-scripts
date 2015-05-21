@@ -3,12 +3,11 @@
 // Version: 1.0
 
 // Rolls should be structured as "!ut <rank name> <column shift> <attack type> --roll:<roll name> --id:<character id>"
-// Make sure there are no spaces in the rank name.  Ex: Shift 0 becomes Shift0 or Shift-0
-// Do not use a + sign in front of positive column shifts.  Ex +3 column shift should just be 3
-// Column shift is optional but must come before attack type (if there is one)
-// Attack type is optional but must come after column shift (if there is one)
-// --roll:<roll name> can be used to add a title to your roll when using Roll Templates; optional but must come after rank name, column shift, and attack type
-// --id:<character id> can be used to put the character's name into the Roll Template; optional but must come after rank name, column shift, and attack type
+// <rank name> must come first after the "!ut" API declaration
+// <column shift> and <attack type> can come in any order, but must be after the <rank name> and before the options for <roll name> and <character id>
+// Make sure there are no spaces in the <rank name>.  Ex: Shift 0 becomes Shift0 or Shift-0
+// --roll:<roll name> can be used to add a title to your roll when using Roll Templates; optional but must come after <rank name>, <column shift>, and <attack type>
+// --id:<character id> can be used to put the character's name into the Roll Template; optional but must come after <rank name>, <column shift>, and <attack type>
 
 //Use !help for reminders on how to use the script
 
@@ -24,12 +23,12 @@ on("chat:message", function(msg) {
     
 /* PRINT REMINDERS TO CHAT WINDOW */
     if(msg.type == "api" && msg.content.indexOf("!help") !== -1) {
-        sendChat(msg.who, "Use the format <b>!ut [rank name] [column shift] [attack type] --roll:[roll name] --id:[character id]<b>\nDo not use a + in front of positive column shifts, if there is no column shift you can either use a 0 or leave it out\nUse <b>!example</b> to get examples on how to use the script\nUse <b>!attack</b> for a listing of attack type abbreviation.");        
+        sendChat(msg.who, "Use the format <b>!ut [rank name] [column shift] [attack type] --roll:[roll name] --id:[character id]<b>\nRank Name must come first, --roll: and --id: options must come at the end\nUse <b>!example</b> to get examples on how to use the script\nUse <b>!attack</b> for a listing of attack type abbreviation.");        
     }
     
 /* PRINT EXAMPLES TO CHAT WINDOW */
     if(msg.type == "api" && msg.content.indexOf("!example") !== -1) {
-        sendChat(msg.who, "<b>!ut Monstrous</b> (Monstrous rank roll)\n<b>!ut Incredible 2 CA</b> (Incredible rank with +2 column shift on a Catching attempt)\n<b>!ut Remarkable -2</b> (Remarkable rank with -2 column shift)\n<b>!ut Excellent BA</b> (Excellent rank Blunt Attack)");
+        sendChat(msg.who, "<b>!ut Monstrous</b> (Monstrous rank roll)\n<b>!ut Incredible 2 CA</b> (Incredible rank with +2 column shift on a Catching attempt)\n<b>!ut Remarkable DO -2</b> (Remarkable rank with -2 column shift on a Dodging attempt)\n<b>!ut Excellent BA</b> (Excellent rank Blunt Attack)");
     }
     
 /*UNIVERSAL TABLE SCRIPT*/
@@ -128,10 +127,18 @@ on("chat:message", function(msg) {
             sendChat(msg.who, "Rank not found. Please try again.");   
         } else {
         /* GET COLUMN SHIFT AND SET ROLL COLUMN */    
-            var colShift = parseInt(input[2]);
+            var colShift;
             var rollColumnIndex;
         
-            if(_.isNaN(colShift)) {
+            _.each(input,function(i){
+                if (!_.isNaN(parseInt(i))) {
+                    colShift = parseInt(i);                    
+                } else if (i.indexOf("+") > -1) {
+                    colshift = parseInt(i.replace(/+/,""));                
+                }
+            });
+            
+            if(!colShift) {
                 rollColumnIndex = rankIndex;
             } else {
                 if (rankIndex + colShift < 0) {
@@ -153,23 +160,22 @@ on("chat:message", function(msg) {
             var attackTypeDefault;
             var attackTypeMarvel;
         
-            var attack = function(index) {            
-                if (_.isNaN(colShift)) {
-                    attackTypeResult = attackTypeResults[index][input[2]] || "";
-                    attackTypeRoll = attackTypes[input[2]] || "";
-                } else {
-                    attackTypeResult = attackTypeResults[index][input[3]] || "";
-                    attackTypeRoll = attackTypes[input[3]] || "";
-                }
+            var attack = function(index) {
+                var ind = index;
+                _.each(input,function(i){
+                    if (_.has(attackTypes,i)){
+                        attackTypeResult = attackTypeResults[ind][i];
+                        attackTypeRoll = attackTypes[i];                       
+                    }                     
+                });
                 
                 if (attackTypeRoll) {
                     attackTypeDefault = "{{Type=" + attackTypeRoll + "}}";
                     attackTypeMarvel = "{{attacktype=" + attackTypeRoll + "}}";
-                }
-                
-                if (attackTypeResult == "") {
-                    attackTypeString = ".";
-                } else {attackTypeString = " for a " + attackTypeResult + "."};
+                    attackTypeString = " for a " + attackTypeResult;
+                } else {
+                    attackTypeString = "";
+                }             
             };
         
         /* SEARCH FOR OPTIONAL ROLL TYPE AND ID AND ASSIGN TO VARIABLES */
@@ -190,7 +196,7 @@ on("chat:message", function(msg) {
             var rollTypeMarvel;
             var rollTypeDefault;
         
-            if (rollType !== undefined) {
+            if (rollType) {
                 rollTypeMarvel = "{{rolltype=" + rollType + "}}";
                 rollTypeDefault = "<br />" + rollType;
             }
@@ -238,7 +244,7 @@ on("chat:message", function(msg) {
             sendChat (msg.who, "&{template:default} {{name=" +  who + rollTypeDefault + "}} " + attackTypeDefault + " {{Column=" + rankColumns[rollColumnIndex].toUpperCase() + "}} {{Roll=" + rollResult + "}}{{Result=<span style=\"padding:2px 5px;font-weight:bold;background-color:" + colorResult + "</span>" + attackTypeString + "}}");
         
         /**** NO ROLL TEMPLATE ****/
-            //sendChat(msg.who, rankColumns[rollColumnIndex].toUpperCase() + " column: " + rollResult + " is a <span style=\"padding:2px 5px;font-weight:bold; background-color:" + colorResult + "</span> result" + attackTypeString);
+            //sendChat(msg.who, rankColumns[rollColumnIndex].toUpperCase() + " column: " + rollResult + " is a <span style=\"padding:2px 5px;font-weight:bold; background-color:" + colorResult + "</span> result" + attackTypeString + ".");
         
         /**** MARVEL THEMED ROLL TEMMPLATE ****/
             //sendChat (msg.who, "&{template:marvel} {{rollname=" + who + "}} " + attackTypeMarvel + " " + rollTypeMarvel + " {{rollcolumn=" + rankColumns[rollColumnIndex].toUpperCase() + "}} {{rollresult=" + rollResult + "}}{{colorresult=<span style=\"padding:2px 5px;font-weight:bold;background-color:" + colorResult + "</span>" + attackTypeString + "}}")
