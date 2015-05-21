@@ -1,0 +1,120 @@
+ROLLS SHOULD BE STRUCTURED AS:
+!ut <rank name> <column shift> <attack type> --roll:<roll type/label> --id:<character id>
+
+BASIC RULES REFERENCE:
+Make sure there are no spaces in the Rank Name.  Ex: Shift 0 becomes Shift0 or Shift-0 and Class 3000 becomes CL3000 or Class3000
+Rank Name must come first after the "!ut" declaration and is the only required input
+Do not use a + sign in front of positive Column Shifts.  Ex: A +3 column shift should just be 3
+If there is a Column Shift, then it MUST come before any Attack Type (if there is one)
+You do not need to use a Column Shift to use the Attack Type and you do not need to use the Attack Type to use a Column Shift
+The --roll: and --id: options MUST come after Rank Name, Column Shift, and Attack Type but otherwise can be in any order and are completely optional (These are only used for Roll Templates)
+The script does it's best to be case insensitive, so capitalization should not matter
+Spelling, however, does matter ("incredible" will work, "Inedible" will not)
+
+Use !help to get some suggestions on how to use the script
+Use !example to see some example rolls
+Use !attack to see a reference list of the attack type abbreviations (they are the same abbreviations used on the Universal Table)
+
+RANK NAMES:
+Rank Names MUST come first after the "!ut" API call and should be written with no spaces.  You can also use the same abbreviations for rank names as can be found on the top of the universal table (shown in parenthesis):
+Shift-0 or Shift0  (0)
+Feeble (Fe)
+Poor (Pr)
+Typical (Ty)
+Good (Gd)
+Excellent (Ex)
+Remarkable (Rm)
+Incredible (In)
+Amazing (Am)
+Monstrous (Mn)
+Unearthly (Un)
+Shift-X or ShiftX(X)
+Shift-Y or ShiftY (Y)
+Shift-Z or ShiftZ (Z)
+Class1000 or CL1000 (1000)
+Class3000 or CL3000 (3000)
+Class5000 or CL5000 (5000)
+Beyond (B)
+
+OPTIONS:
+These options must come after Rank Name, Column Shift, and Attack Type and can be used to better designate who is rolling and why when using Roll Templates
+
+--roll:<roll name> (add a name for your roll, ex: --roll:Fighting, --roll:My Really Cool Power)
+--id:<character id> (add the character's name, ex: --id:@{Mr. Bearington|character_id})
+
+EXAMPLE ROLLS::
+!ut Incredible
+Rolls on the Incredible column
+!ut Remarkable 1
++1 column shift to Incredible
+!ut Unearthly -3
+-3 column shift to Incredible
+!ut Excellent 1 do
++1 column shift to Remarkable column for a Dodging attempt
+!ut Typical CA
+Catching attempt on the Typical column
+!ut Remarkable 1 BA --roll:Fighting --id:@{Mr. Bearington|characer_id}
++1 column shift to Incredible on a Blunt Attack by Mr. Bearington for a Fighting roll.
+!ut Amazing --roll:My Super Power
+Amazing column for a "My Super Power" roll
+!ut Excellent
+
+
+USE WITH MarvelSH CHARACTER SHEET:
+
+ABILITY RANK NAMES ARE TAGGED AS:
+VFighting
+VAgility
+VStrength
+VEndurance
+VReason
+VIntuition
+VPsyche
+VPopularity
+VResources
+
+If you are using a global macro or the chat box, you can use @{<character name>|V<attribute>} to access the Rank Name.  Alternately, if you are using tokens linked to character sheets, you can use @{selected|V<attribute>}  If you are using a character Ability Macro, @{V<attribute>} will work.
+
+Examples:
+@{VFighting} (Character ability macro}
+@{selected|VPopularity} (for global macro)
+@{Mr. Bearinton|VIntuition} (for chat box)
+
+POWER RANKS AND NAMES CAN BE ACCESSED THROUGH:
+@{repeating_powers_#_fighting_value} for Rank Name
+@{repeating_powers_#_power_name} for the Power's Name
+
+Where the # symbol is the index number of the power.  Be aware that the API starts its indexes at 0.  Meaning the first power would be @{repeating_powers_0_fighting_value}, the second power would be @{repeating_powers_1_fighting_value}, the third power would be @{repeating_powers_2_fighting_value}, etc.
+
+You can use @{repeating_powers_#_fighting_value} from a character Ability Macro or @{<character name>|repeating_powers_#_fighting_value} from the chat box or global macro
+
+Alternately, if you are using tokens linked to character sheets, you could use @{selected|repeating_powers_#_fighting_value}
+
+Examples:
+@{repeating_powers_0_fighting_value} (First Power, character Ability Macro)
+@{selected|repeating_powers_4_fighting_value} (Fifth Power, global macro)
+@{Mr. Bearinton|repeating_powers_2_fighting_value} (Third Power, chatbox)
+
+TO PUT ALL THIS TOGETHER FOR MACROS AND CHARACTER SHEET ABILITIES:
+The GM could create a global macro for Fighting rolls that let's you grab the information using a selected token and queries the player for column shift and attack type:
+!ut @{selected|VFighting} ?{Column Shift|0} ?{Attack Type} --roll:Fighting --id:@{selected|character_id}
+
+The GM could create a global macro for the first power on the character's sheets that lets you grab the information using a selected token and queries the player for column shift and attack type:
+!ut @{selected|repeating_powers_0_fighting_value} ?{Column Shift|0} ?{Attack Type} --roll:@{selected|repeating_powers_0_power_name} --id:@{selected|character_id}
+
+A player could create a character ability for their intuition rolls that queries  for column shift and attack type while grabbing the information for their intuition rank and character id:
+!ut @{VIntuition} ?{Column Shift|0} ?{Attack Type} --roll:Intuition --id:@{character_id}
+
+A player could create a character ability for the first power listed on his sheet that queries for column shift and attack type while grabbing the information for the power rank and character id:
+!ut @{repeating_powers_0_fighting_value} ?{Column Shift|0} ?{Attack Type} --roll:@{repeating_powers_0_power_name} --id:@{character_id}
+
+USING DIFFERENT ROLL FORMAT OPTIONS:
+
+Near the bottom of the script is where the results of the roll are formatted.  There are different options for formatting with the unused lines "commented out."  This is done by putting "//"  in front of the lines of code, and it means that the code is ignored when the script runs.
+
+The standard option is to use the Default Roll Template provided by Roll20, but there is also the option to use NO roll template, or a Marvel themed Roll Template which will be available through the API enabled MarvelSH character sheet.
+
+To use these other options, just "comment out" the line of code under  "/****USE DEFAULT ROLL TEMPLATE****/" by putting "//" in front of the code, and then remove the "//" in front of the option you wish to use.  
+
+
+
