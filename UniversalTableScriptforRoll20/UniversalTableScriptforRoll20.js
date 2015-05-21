@@ -1,16 +1,6 @@
 // Rolls should be structured as "!ut <rankname> <column shift>"
 // Make sure there are no spaces in the rankname.  Ex: Shift 0 becomes Shift0 or Shift-0
 // Do not use a + sign in front of positive column shifts.  Ex +3 column shift should just be 3
-// Roll example: !ut Incredible 1
-// Would be a +1 column shift roll for an Incredible rank (thus rolling on the Amazing column)
-// Roll example: !ut Remarkable
-// Would be a no column shift roll for a Remarkable rank (thus rolling on the Remarkable column)
-// Roll example: !ut Unearthly -3
-// Would be a -3 column shift roll for Unearthly rank (thus rolling on the Incredible column)
-// Roll example: !ut Incredible CA
-// Would be a no column shift roll for an Incredible rank Catching attempt
-// Roll example !ut Excellent 1 SH
-// would be a +1 column shift roll for an Excellent rank Shooting attempt
 
 //Use !help for reminders on how to use the script
 
