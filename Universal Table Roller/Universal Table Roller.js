@@ -1,6 +1,14 @@
-// Rolls should be structured as "!ut <rankname> <column shift>"
-// Make sure there are no spaces in the rankname.  Ex: Shift 0 becomes Shift0 or Shift-0
+// UNIVERAL TABLE DICE ROLLER FOR MARVEL SUPER HEROES RPG
+// Last Update: May, 2015
+// Version: 1.0
+
+// Rolls should be structured as "!ut <rank name> <column shift> <attack type> --roll:<roll name> --id:<character id>"
+// Make sure there are no spaces in the rank name.  Ex: Shift 0 becomes Shift0 or Shift-0
 // Do not use a + sign in front of positive column shifts.  Ex +3 column shift should just be 3
+// Column shift is optional but must come before attack type (if there is one)
+// Attack type is optional but must come after column shift (if there is one)
+// --roll:<roll name> can be used to add a title to your roll when using Roll Templates; optional but must come after rank name, column shift, and attack type
+// --id:<character id> can be used to put the character's name into the Roll Template; optional but must come after rank name, column shift, and attack type
 
 //Use !help for reminders on how to use the script
 
