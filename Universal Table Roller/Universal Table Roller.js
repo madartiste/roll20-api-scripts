@@ -127,13 +127,17 @@ on("chat:message", function(msg) {
         } else {
         /* GET COLUMN SHIFT AND SET ROLL COLUMN */    
             var colShift;
+            var plus;
             var rollColumnIndex;
         
             _.each(input,function(i){
                 if (!_.isNaN(parseInt(i))) {
                     colShift = parseInt(i);                    
                 } else if (i.indexOf("+") > -1) {
-                    colshift = parseInt(i.replace(/+/,""));                
+                    plus = parseInt(i.replace("+",""));
+                    if (!_.isNaN(plus)) {
+                        colshift = plus;
+                    }
                 }
             });
                 
