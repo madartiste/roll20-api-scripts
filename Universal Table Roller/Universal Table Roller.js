@@ -14,6 +14,7 @@
 //Use !example for examples of how to use the script
 
 // Use !attack to print out the list of abbreviations for attack types
+"use strict";
 
 on("chat:message", function(msg) {
 /* PRINT ATTACK TYPE ABBREVIATIONS TO CHAT WINDOW */
@@ -43,7 +44,7 @@ on("chat:message", function(msg) {
         var attackTypes = {ba:"Blunt Attack",ea:"Edged Attack",sh:"Shooting",te:"Throwing Edged",tb:"Throwing Blunt",en:"Energy",fo:"Force",gp:"Grappling",gb:"Grabbing",es:"Escaping",ch:"Charging",do:"Dodging",ev:"Evading",bl:"Blocking",ca:"Catching",stun:"Stun?",slam:"Slam?",kill:"Kill?"};
         
     /* SETUP DICE ROLL AND GET MESSAGE CONTENT */
-        var rollResult = randomInteger(100);
+        var rollNum = randomInteger(100);       
         var msgContent = msg.content;
         var input = msgContent.toLowerCase().split(" ");
     
@@ -218,23 +219,32 @@ on("chat:message", function(msg) {
            
     /* GATHER RESULTS, FORMAT, AND SEND TO CHAT */
             var colorResult;
+            var rollResult;
+            var borderColor;
             
-            if (rollResult < rollColumn.startgreen) {
+            if (rollNum < rollColumn.startgreen) {
                 attack(0);
-                colorResult = "white;\">WHITE"
+                colorResult = "white;\">WHITE";
+                borderColor = '#FEF68E';
               
-            } else if (rollResult >= rollColumn.startgreen && rollResult < rollColumn.startyellow) {
+            } else if (rollNum >= rollColumn.startgreen && rollNum < rollColumn.startyellow) {
                 attack(1);
-                colorResult = "green;color: white;\">GREEN"
+                colorResult = "green;color: white;\">GREEN";
+                borderColor = 'green';
             
-            } else if (rollResult >= rollColumn.startyellow && rollResult < rollColumn.startred) {
+            } else if (rollNum >= rollColumn.startyellow && rollNum < rollColumn.startred) {
                 attack(2);
-                colorResult = "yellow;\">YELLOW"
+                colorResult = "yellow;\">YELLOW";
+                borderColor = '#FFCC00';
             
-            } else if (rollResult >= rollColumn.startred) {
+            } else if (rollNum >= rollColumn.startred) {
                 attack(3);
-                colorResult = "red;color: white;\">RED"
+                colorResult = "red;color: white;\">RED";
+                borderColor = 'red';
             };
+            
+            //Style number result of die roll according to result color
+            rollResult = '<span style="background-color:#FEF68E;border:2px solid ' + borderColor + ';padding:0 3px 0 3px;font-weight:bold;font-size:1.1em;">' + rollNum + '</span>';
             
     /* CHANGE FORMAT OF CHAT RESULT */        
         /**** DEFAULT ROLL TEMPLATE ****/
