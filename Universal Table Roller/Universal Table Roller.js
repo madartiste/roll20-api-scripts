@@ -14,6 +14,7 @@
 //Use !example for examples of how to use the script
 
 // Use !attack to print out the list of abbreviations for attack types
+
 "use strict";
 
 on("chat:message", function(msg) {
