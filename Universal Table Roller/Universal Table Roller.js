@@ -15,22 +15,31 @@
 
 // Use !attack to print out the list of abbreviations for attack types
 
+// TO CHANGE ROLL TEMPLATE:
+    // Scroll down to the bottom of the script
+    // Find the section that says CHOOSE YOUR TEMPLATE HERE!
+    // There are three options each with a header that states what that option is
+    // Each option starts with 'template ='
+    // Remove the // in front of the option you wish to use, the text should turn white
+    // MAKE SURE TO PUT // in front of any options you DO NOT want to use, the text should turn gray
+    // Hit the 'Save Script' button
+    
 "use strict";
-
+    
 on("chat:message", function(msg) {
 /* PRINT ATTACK TYPE ABBREVIATIONS TO CHAT WINDOW */
     if(msg.type == "api" && msg.content.indexOf("!attack") !== -1) {
-        sendChat(msg.who, "Abbreviations for types of attcks:\nBA: Blunt Attacks, EA: Edged Attacks, SH: Shooting\nTE: Throwing Edged,TB: Throwing Blunt,EN: Energy\nFO: Force, GP: Grappling, GB: Grabbing\nES: Escaping, CH: Charging, DO: Dodging\nEV: Evading, BL: Blocking, CA: Catching\nStun: Stun?, Slam: Slam?, Kill: Kill?");
+        sendChat(msg.who, "<table width='100%' cellpadding='3px' style='border:1px gray solid;background-color:white;'><tr><th style='background-color:#e74231;color:#ffff00;padding:5px;'>Attack Type Abbreviations</th></tr><tr><td>BA: Blunt Attacks, EA: Edged Attacks, SH: Shooting</td></tr><tr style='background-color:#eee;'><td>TE: Throwing Edged,TB: Throwing Blunt,EN: Energy</td></tr><tr><td>FO: Force, GP: Grappling, GB: Grabbing</td></tr><tr style='background-color:#eee;'><td>ES: Escaping, CH: Charging, DO: Dodging</td></tr><tr><td>EV: Evading, BL: Blocking, CA: Catching</td></tr><tr style='background-color:#eee;'><td>Stun: Stun?, Slam: Slam?, Kill: Kill?</td></tr></table>");
     }
     
 /* PRINT REMINDERS TO CHAT WINDOW */
     if(msg.type == "api" && msg.content.indexOf("!help") !== -1) {
-        sendChat(msg.who, "Use the format <b>!ut [rank name] [column shift] [attack type] --roll:[roll name] --id:[character id]<b>\nRank Name must come first, --roll: and --id: options must come at the end\nUse <b>!example</b> to get examples on how to use the script\nUse <b>!attack</b> for a listing of attack type abbreviation.");        
+        sendChat(msg.who, "<table width='100%' cellpadding='3px' style='border:1px gray solid;background-color:white;'><tr><th style='background-color:#e74231;color:#ffff00;padding:5px;'>Help</th></tr><tr><td>Use the format <b>!ut [rank name] [column shift] [attack type] --roll:[roll name] --id:[character id]<b></td></tr><tr style='background-color:#eee;'><td>Rank Name must come first, --roll: and --id: options must come at the end</td></tr><tr><td>Use <b>!example</b> to get examples on how to use the script</td></tr><tr style='background-color:#eee;'><td>Use <b>!attack</b> for a listing of attack type abbreviation.</td></tr></table>");        
     }
     
 /* PRINT EXAMPLES TO CHAT WINDOW */
     if(msg.type == "api" && msg.content.indexOf("!example") !== -1) {
-        sendChat(msg.who, "<b>!ut Monstrous</b> (Monstrous rank roll)\n<b>!ut Incredible 2 CA</b> (Incredible rank with +2 column shift on a Catching attempt)\n<b>!ut Remarkable DO -2</b> (Remarkable rank with -2 column shift on a Dodging attempt)\n<b>!ut Excellent BA</b> (Excellent rank Blunt Attack)");
+        sendChat(msg.who, "<table width='100%' cellpadding='3px' style='border:1px gray solid;background-color:white;'><tr><th style='background-color:#e74231;color:#ffff00;padding:5px;'>Example</th></tr><tr style='background-color:white;'><td><b>!ut Monstrous</b> (Monstrous rank roll)</td></tr><tr style='background-color:#eee;'><td><b>!ut Incredible 2 CA</b> (Incredible rank with +2 column shift on a Catching attempt)</td></tr><tr><td><b>!ut Remarkable DO -2</b> (Remarkable rank with -2 column shift on a Dodging attempt)</td></tr><tr style='background-color:#eee;'><td><b>!ut Excellent BA</b> (Excellent rank Blunt Attack)</td></tr></table>");
     }
     
 /*UNIVERSAL TABLE SCRIPT*/
@@ -247,15 +256,30 @@ on("chat:message", function(msg) {
             //Style number result of die roll according to result color
             rollResult = '<span style="background-color:#FEF68E;border:2px solid ' + borderColor + ';padding:0 3px 0 3px;font-weight:bold;font-size:1.1em;">' + rollNum + '</span>';
             
-    /* CHANGE FORMAT OF CHAT RESULT */        
-        /**** DEFAULT ROLL TEMPLATE ****/
-            sendChat (msg.who, "&{template:default} {{name=" +  who + rollTypeDefault + "}} " + attackTypeDefault + " {{Column=" + rollColName + "}} {{Roll=" + rollResult + "}}{{Result=<span style=\"padding:2px 5px;font-weight:bold;background-color:" + colorResult + "</span>" + attackTypeString + "}}");
+    /* CHANGE FORMAT OF CHAT RESULT */
+        var template;        
+        var defaultTemplate = "&{template:default} {{name=" +  who + rollTypeDefault + "}} " + attackTypeDefault + " {{Column=" + rollColName + "}} {{Roll=" + rollResult + "}}{{Result=<span style=\"padding:2px 5px;font-weight:bold;background-color:" + colorResult + "</span>" + attackTypeString + "}}";
+        var noTemplate = rollColName + " column: " + rollResult + " is a <span style=\"padding:2px 5px;font-weight:bold; background-color:" + colorResult + "</span> result" + attackTypeString + ".";
+        var marvelTemplate = "&{template:marvel} {{rollname=" + who + "}} " + attackTypeMarvel + " " + rollTypeMarvel + " {{rollcolumn=" + rollColName + "}} {{rollresult=" + rollResult + "}}{{colorresult=<span style=\"padding:2px 5px;font-weight:bold;background-color:" + colorResult + "</span>" + attackTypeString + "}}";
         
-        /**** NO ROLL TEMPLATE ****/
-            //sendChat(msg.who, rollColName + " column: " + rollResult + " is a <span style=\"padding:2px 5px;font-weight:bold; background-color:" + colorResult + "</span> result" + attackTypeString + ".");
+     
+/*********** CHOOSE YOUR TEMPLATE BLOW HERE! ************/
+
+        /**** DEFAULT ROLL TEMPLATE ****/            
+            template = defaultTemplate;
+        
+        /**** NO ROLL TEMPLATE ****/            
+            //template = noTemplate;
         
         /**** MARVEL THEMED ROLL TEMMPLATE ****/
-            //sendChat (msg.who, "&{template:marvel} {{rollname=" + who + "}} " + attackTypeMarvel + " " + rollTypeMarvel + " {{rollcolumn=" + rollColName + "}} {{rollresult=" + rollResult + "}}{{colorresult=<span style=\"padding:2px 5px;font-weight:bold;background-color:" + colorResult + "</span>" + attackTypeString + "}}")
+            //template = marvelTemplate
+        
+/*********** CHOOSE YOUR TEMPLATE ABOVE HERE! ***********/   
+ 
+    
+        
+        /*** SENDS FINAL MESSAGE TO CHAT WINDOW - DO NOT CHANGE ***/    
+            sendChat(msg.who, template);        
         };
     }
 });
