@@ -25,21 +25,69 @@
     // Hit the 'Save Script' button
     
 "use strict";
-    
+            
 on("chat:message", function(msg) {
-/* PRINT ATTACK TYPE ABBREVIATIONS TO CHAT WINDOW */
-    if(msg.type == "api" && msg.content.indexOf("!attack") !== -1) {
-        sendChat(msg.who, "<table width='100%' cellpadding='3px' style='border:1px gray solid;background-color:white;'><tr><th style='background-color:#e74231;color:#ffff00;padding:5px;'>Attack Type Abbreviations</th></tr><tr><td>BA: Blunt Attacks, EA: Edged Attacks, SH: Shooting</td></tr><tr style='background-color:#eee;'><td>TE: Throwing Edged,TB: Throwing Blunt,EN: Energy</td></tr><tr><td>FO: Force, GP: Grappling, GB: Grabbing</td></tr><tr style='background-color:#eee;'><td>ES: Escaping, CH: Charging, DO: Dodging</td></tr><tr><td>EV: Evading, BL: Blocking, CA: Catching</td></tr><tr style='background-color:#eee;'><td>Stun: Stun?, Slam: Slam?, Kill: Kill?</td></tr></table>");
-    }
     
-/* PRINT REMINDERS TO CHAT WINDOW */
-    if(msg.type == "api" && msg.content.indexOf("!help") !== -1) {
-        sendChat(msg.who, "<table width='100%' cellpadding='3px' style='border:1px gray solid;background-color:white;'><tr><th style='background-color:#e74231;color:#ffff00;padding:5px;'>Help</th></tr><tr><td>Use the format <b>!ut [rank name] [column shift] [attack type] --roll:[roll name] --id:[character id]<b></td></tr><tr style='background-color:#eee;'><td>Rank Name must come first, --roll: and --id: options must come at the end</td></tr><tr><td>Use <b>!example</b> to get examples on how to use the script</td></tr><tr style='background-color:#eee;'><td>Use <b>!attack</b> for a listing of attack type abbreviation.</td></tr></table>");        
-    }
+/* HELPER MESSAGES */
+    if(msg.type == "api" && (msg.content.indexOf("!attack") !== -1 || msg.content.indexOf("!help") !== -1 || msg.content.indexOf("!example") !== -1)) {
+        var lines = [];
+        var helpMessage = "";
     
-/* PRINT EXAMPLES TO CHAT WINDOW */
-    if(msg.type == "api" && msg.content.indexOf("!example") !== -1) {
-        sendChat(msg.who, "<table width='100%' cellpadding='3px' style='border:1px gray solid;background-color:white;'><tr><th style='background-color:#e74231;color:#ffff00;padding:5px;'>Example</th></tr><tr style='background-color:white;'><td><b>!ut Monstrous</b> (Monstrous rank roll)</td></tr><tr style='background-color:#eee;'><td><b>!ut Incredible 2 CA</b> (Incredible rank with +2 column shift on a Catching attempt)</td></tr><tr><td><b>!ut Remarkable DO -2</b> (Remarkable rank with -2 column shift on a Dodging attempt)</td></tr><tr style='background-color:#eee;'><td><b>!ut Excellent BA</b> (Excellent rank Blunt Attack)</td></tr></table>");
+        var helpTable = "<table width='100%' cellpadding='3px' style='border:1px gray solid;background-color:white;'>";
+        helpTable += "<tr><th style='background-color:black;color:#fff;padding:5px;'>";
+        var helpHeader;
+        var helpHeaderClose = "</th></tr>";
+        var helpTableRowEven = "<tr><td>";
+        var helpTableRowOdd = "<tr style='background-color:#eee;'><td>";
+        var helpTableRowClose = "</td></tr>";
+        var helpTableClose = "</table>";         
+
+        var makeHelpMessage = function (rows) {
+            helpMessage += helpTable + helpHeader + helpHeaderClose;
+            for (var i = 0; i < rows; i++) {
+                if (i % 2 === 0) {
+                    helpMessage += helpTableRowEven;
+                } else {
+                    helpMessage += helpTableRowOdd;
+                }
+                helpMessage += lines[i] + helpTableRowClose;
+            }
+            helpMessage += helpTableClose;
+        }
+    
+        if (msg.content.indexOf("!attack") !== -1) {
+            helpHeader = "Attack Type Abbreviations";
+            lines.push("<b>BA:</b> Blunt Attacks, <b>EA:</b> Edged Attacks, <b>SH:</b> Shooting");
+            lines.push("<b>TE:</b> Throwing Edged, <b>TB:</b> Throwing Blunt, <b>EN:</b> Energy");
+            lines.push("<b>FO:</b> Force, <b>GP:</b> Grappling, <b>GB:</b> Grabbing");
+            lines.push("<b>ES:</b> Escaping, <b>CH:</b> Charging, <b>DO:</b> Dodging");
+            lines.push("<b>EV:</b> Evading, <b>BL:</b> Blocking, <b>CA:</b> Catching");
+            lines.push("<b>Stun:</b> Stun?, <b>Slam:</b> Slam?, <b>Kill:</b> Kill?");
+            
+            makeHelpMessage(6);
+        }
+        
+        if (msg.content.indexOf("!help") !== -1) {
+            helpHeader = "Help";
+            lines.push("Use the format <b>!ut [rank name] [column shift] [attack type] --roll:[roll name] --id:[character id]<b>");
+            lines.push("Rank Name must come first, --roll: and --id: options must come at the end");
+            lines.push("Use <b>!example</b> to get examples on how to use the script");
+            lines.push("Use <b>!attack</b> for a listing of attack type abbreviation");
+            
+            makeHelpMessage(4);
+        }
+        
+        if (msg.content.indexOf("!example") !== -1) {
+            helpHeader = "Example";
+            lines.push("<b>!ut Monstrous</b> (Monstrous rank roll)");
+            lines.push("<b>!ut Incredible 2 CA</b> (Incredible rank with +2 column shift on a Catching attempt)");
+            lines.push("<b>!ut Remarkable DO -2</b> (Remarkable rank with -2 column shift on a Dodging attempt)");
+            lines.push("<b>!ut Excellent BA</b> (Excellent rank Blunt Attack)</td>");
+            
+            makeHelpMessage(4);
+        }
+            
+        sendChat(msg.who, helpMessage);
     }
     
 /*UNIVERSAL TABLE SCRIPT*/
@@ -134,7 +182,7 @@ on("chat:message", function(msg) {
         
     /* CHECK THAT RANK NAME IS CORRECT, HALT IF INCORRECT */
         if (rankIndex < 0) {
-            sendChat(msg.who, "<i>Rank not found. Please try again.</i>");   
+            sendChat(msg.who, "<i>Rank not found. Please try again.</i>");   //, null, {noarchive: true}
         } else {
         /* GET COLUMN SHIFT AND SET ROLL COLUMN */    
             var colShift;
@@ -264,7 +312,6 @@ on("chat:message", function(msg) {
         
      
 /*********** CHOOSE YOUR TEMPLATE BLOW HERE! ************/
-
         /**** DEFAULT ROLL TEMPLATE ****/            
             template = defaultTemplate;
         
@@ -273,7 +320,7 @@ on("chat:message", function(msg) {
         
         /**** MARVEL THEMED ROLL TEMMPLATE ****/
             //template = marvelTemplate
-        
+            
 /*********** CHOOSE YOUR TEMPLATE ABOVE HERE! ***********/   
  
     
